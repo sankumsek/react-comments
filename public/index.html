@@ -10,11 +10,16 @@
     <div id="content"></div>
     <script type="text/jsx">
       var CommentBox = React.createClass({
+        
+        getInitialState: function() {
+          return {data: []};
+        },
+
         render: function() {
           return(
             <div className="commentBox">
               <h1>Comments:</h1>
-              <CommentList />
+              <CommentList data={this.state.data} />
               <CommentForm />
             </div>
           );
@@ -23,10 +28,17 @@
 
       var CommentList = React.createClass({
         render: function() {
+          var commentNodes = this.props.data.map(function (comment) {
+            return (
+              <Comment author={comment.author}>
+                {comment.text}
+              </Comment>
+            );
+          });
+
           return(
             <div className="commentList">
-              <Comment author="Pete Hunt">This is comment is the child element</Comment>
-              <Comment author="Jordan Walke">This is another child comment</Comment>
+              {commentNodes}
             </div>
           );
         }
@@ -56,7 +68,7 @@
         }
       });
       React.render(
-        <CommentBox />,
+        <CommentBox url="comments.json" />,
         document.getElementById('content')
       );
     </script>
